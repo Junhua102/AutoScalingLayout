@@ -1,0 +1,96 @@
+<me.dreamheart.autoscalinglayout.ASRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    custom:designWidth="768px"
+    custom:designHeight="1150px"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LoginActivity"
+    android:background="@drawable/login_bg"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120px"
+        android:text="登录界面"
+        android:textSize="60px"
+        android:textColor="#fff"
+        android:layout_centerHorizontal="true"
+        />
+
+    <View android:id="@+id/login_input_form"
+        android:layout_width="540px"
+        android:layout_height="200px"
+        android:layout_marginTop="250px"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/login_input_form"
+        />
+
+    <TextView android:id="@+id/user_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="280px"
+        android:layout_marginLeft="32px"
+        android:layout_alignLeft="@+id/login_input_form"
+        android:text="@string/user_name"
+        android:textSize="30px"
+        android:textColor="#666"
+        />
+
+    <TextView android:id="@+id/password_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="380px"
+        android:layout_alignLeft="@+id/user_name_tv"
+        android:text="@string/password"
+        android:textSize="30px"
+        android:textColor="#666"
+        />
+
+    <EditText android:id="@+id/email"
+        android:layout_toRightOf="@+id/user_name_tv"
+        android:layout_alignBaseline="@+id/user_name_tv"
+        android:layout_height="wrap_content"
+        android:layout_width="380px"
+        android:textSize="30px"
+        android:textColor="#444"
+        android:hint="@string/prompt_name"
+        android:inputType="text"
+        android:maxLines="1"
+        android:singleLine="true" />
+
+    <EditText android:id="@+id/password"
+        android:layout_toRightOf="@+id/user_name_tv"
+        android:layout_alignBaseline="@+id/password_tv"
+        android:layout_height="wrap_content"
+        android:layout_width="380px"
+        android:textSize="30px"
+        android:textColor="#444"
+        android:hint="@string/prompt_password"
+        android:inputType="textPassword"
+        android:maxLines="1" android:singleLine="true" />
+
+    <Button android:id="@+id/email_sign_in_button"
+        android:background="@drawable/login_btn_selector"
+        android:layout_marginTop="520px"
+        android:layout_centerHorizontal="true"
+        android:layout_width="540px"
+        android:layout_height="80px"
+        android:text="@string/action_sign_in"
+        android:textSize="40px"
+        android:textColor="#444"
+        android:textStyle="bold" />
+
+    <!-- Login progress -->
+    <ProgressBar android:id="@+id/login_progress" style="?android:attr/progressBarStyleLarge"
+        android:layout_marginTop="520px"
+        android:layout_centerHorizontal="true"
+        android:layout_width="120px" android:layout_height="120px"
+        android:layout_marginBottom="8dp" android:visibility="gone" />
+
+</me.dreamheart.autoscalinglayout.ASRelativeLayout>
+
+
