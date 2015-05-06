@@ -4,6 +4,7 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     custom:designWidth="384dp"
     custom:designHeight="575dp"
+    custom:autoScaleEnable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:text="登录界面"
+        android:text="Title"
         android:textSize="30dp"
         android:textColor="#fff"
         android:layout_centerHorizontal="true"
@@ -52,6 +53,7 @@
 
     <EditText android:id="@+id/user_name"
         android:layout_toRightOf="@+id/user_name_tv"
+        android:layout_marginLeft="10dp"
         android:layout_alignBaseline="@+id/user_name_tv"
         android:layout_height="wrap_content"
         android:layout_width="190dp"
@@ -64,6 +66,7 @@
 
     <EditText android:id="@+id/password"
         android:layout_toRightOf="@+id/user_name_tv"
+        android:layout_marginLeft="10dp"
         android:layout_alignBaseline="@+id/password_tv"
         android:layout_height="wrap_content"
         android:layout_width="190dp"
