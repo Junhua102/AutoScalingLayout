@@ -7,16 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- *
+ * ViewGroup自动缩放组件
  */
 public class ASViewGroupUtil {
 
+    // 原设计宽高
     private int mDesignWidth;
     private int mDesignHeight;
+    // 当前宽高
     private float mCurrentWidth;
     private float mCurrentHeight;
+    // 是否开启自动缩放
     private boolean mAutoScaleEnable;
 
+    // 直接用宽高初始化
     public void init(int designWidth, int designHeight){
         mDesignWidth = designWidth;
         mDesignHeight = designHeight;
@@ -25,16 +29,20 @@ public class ASViewGroupUtil {
         mAutoScaleEnable = true;
     }
 
+    // 用AttributeSet初始化
     public void init(ViewGroup vg, AttributeSet attrs){
         TypedArray a = null;
         try{
             a = vg.getContext().obtainStyledAttributes(
                     attrs, R.styleable.AutoScalingLayout);
 
+            // 获得设计宽高
             mDesignWidth = a.getDimensionPixelOffset(R.styleable.AutoScalingLayout_designWidth, 0);
             mDesignHeight = a.getDimensionPixelOffset(R.styleable.AutoScalingLayout_designHeight, 0);
+            // 是否开启自动缩放
             mAutoScaleEnable = a.getBoolean(R.styleable.AutoScalingLayout_autoScaleEnable, true);
         }catch (Throwable e){
+            // 用户使用jar时，没有R.styleable.AutoScalingLayout，需要根据字符串解析参数
             mAutoScaleEnable = true;
             mDesignWidth = 0;
             mDesignHeight = 0;
@@ -62,10 +70,21 @@ public class ASViewGroupUtil {
         mCurrentHeight = mDesignHeight;
     }
 
+    /**
+     * 是否开启自动缩放
+     * @return true or false
+     */
     public boolean isAutoScaleEnable(){
         return mAutoScaleEnable;
     }
 
+    /**
+     * 测量宽高(只有一方数值确定，另一方为WRAP_CONTENT才需要测量，用于保持纵横比)
+     * @param vg ViewGroup
+     * @param widthMeasureSpec  宽度
+     * @param heightMeasureSpec 高度
+     * @return 测量好的宽高
+     */
     public int[] onMeasure(ViewGroup vg, int widthMeasureSpec, int heightMeasureSpec) {
         int measureSpecs[] = new int[2];
         measureSpecs[0] = widthMeasureSpec;
@@ -104,6 +123,11 @@ public class ASViewGroupUtil {
         return measureSpecs;
     }
 
+    /**
+     * 缩放ViewGroup
+     * @param vg    ViewGroup
+     * @return true表示进行了缩放 false表示不需要缩放
+     */
     public boolean scaleSize(ViewGroup vg) {
         if (!mAutoScaleEnable)
             return false;
@@ -111,7 +135,7 @@ public class ASViewGroupUtil {
         if (0 == mDesignWidth || 0 == mDesignHeight)
             return false;
 
-        // Real width and height.
+        // 当前宽高
         int width = vg.getWidth();
         int height = vg.getHeight();
 
@@ -119,22 +143,22 @@ public class ASViewGroupUtil {
             return false;
 
         //Log.i("ASViewGroupUtil", "scaleSize");
-        // Scale if the size changed
+        // 如果大小改变则进行缩放
         if(width != this.mCurrentWidth || height != this.mCurrentHeight) {
+            // 计算缩放比例
             float wScale = (float)width / this.mCurrentWidth;
             float hScale = (float)height / this.mCurrentHeight;
-
             float scale = Math.min(wScale, hScale);
             if (scale < 1.02 && scale > 0.98)
                 return false;
 
-            // Save the width and height
+            // 保存当前宽高
             this.mCurrentWidth = width;
             this.mCurrentHeight = height;
 
             //Log.i("ASViewGroupUtil", "scaleSize " + scale);
-            // Scale the ViewGroup
-            ScalingUtil.scaleViewRecurse(vg, scale);
+            // 缩放ViewGroup
+            ScalingUtil.scaleViewAndChildren(vg, scale);
 
             return true;
         }
@@ -142,6 +166,12 @@ public class ASViewGroupUtil {
         return false;
     }
 
+    /**
+     * 获取dimension的像素值
+     * @param context View的Context
+     * @param value dimension的字符串
+     * @return 像素值
+     */
     private int getDimensionPixelOffset(Context context, String value){
         if (value.endsWith("px")){
             float v = Float.parseFloat(value.substring(0, value.length() - 2));

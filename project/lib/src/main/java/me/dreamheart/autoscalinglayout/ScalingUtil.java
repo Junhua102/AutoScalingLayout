@@ -8,11 +8,21 @@ import android.widget.TextView;
 
 import java.lang.reflect.Method;
 
+/**
+ * 缩放处理类
+ */
 public class ScalingUtil {
 
-    public static void scaleViewRecurse(View view, float factor) {
+    /**
+     * 缩放View和它的子View
+     * @param view      根View
+     * @param factor    缩放比例
+     */
+    public static void scaleViewAndChildren(View view, float factor) {
         try{
+            // 查看是否有 isAutoScaleEnable 方法
             Method method = view.getClass().getMethod("isAutoScaleEnable");
+            // 如果isAutoScaleEnable关闭，则不缩放
             if(!(Boolean)method.invoke(view))
                 return;
         }catch (Exception e){
@@ -20,7 +30,7 @@ public class ScalingUtil {
 
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
 
-        // Scale if not MATCH_PARENT WRAP_CONTENT ...
+        // 如果宽高是具体数值，则进行缩放。(MATCH_PARENT、WRAP_CONTENT 等都是负数)
         if(layoutParams.width > 0) {
             layoutParams.width *= factor;
         }
@@ -28,7 +38,7 @@ public class ScalingUtil {
             layoutParams.height *= factor;
         }
 
-        // Scale margin
+        // 缩放margin
         if(layoutParams instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams)layoutParams;
             marginParams.leftMargin *= factor;
@@ -38,9 +48,9 @@ public class ScalingUtil {
         }
         view.setLayoutParams(layoutParams);
 
-        // EditText has special padding, not scale
+        // EditText 有特殊的padding，不处理
         if(!(view instanceof EditText)) {
-            // Scale padding
+            // 缩放padding
             view.setPadding(
                     (int)(view.getPaddingLeft() * factor),
                     (int)(view.getPaddingTop() * factor),
@@ -49,21 +59,21 @@ public class ScalingUtil {
             );
         }
 
-        // Scale the text size
+        // 缩放文字
         if(view instanceof TextView) {
             scaleTextSize((TextView) view, factor, layoutParams);
         }
 
-        // Recurse
+        // 如果是ViewGroup，继续缩放它的子View
         if(view instanceof ViewGroup) {
             ViewGroup vg = (ViewGroup)view;
             for(int i = 0; i < vg.getChildCount(); i++) {
-                scaleViewRecurse(vg.getChildAt(i), factor);
+                scaleViewAndChildren(vg.getChildAt(i), factor);
             }
         }
     }
 
-    // Scale the text size
+    // 缩放文字
     public static void scaleTextSize(TextView tv, float factor, ViewGroup.LayoutParams layoutParams) {
         tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, tv.getTextSize() * factor);
     }
