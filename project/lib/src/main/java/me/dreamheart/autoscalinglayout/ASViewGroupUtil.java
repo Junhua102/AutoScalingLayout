@@ -2,6 +2,7 @@ package me.dreamheart.autoscalinglayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,10 @@ public class ASViewGroupUtil {
 
         mCurrentWidth = mDesignWidth;
         mCurrentHeight = mDesignHeight;
+
+        // 背景为空时，不进入draw函数，这里必须设置默认背景
+        if (null == vg.getBackground())
+            vg.setBackgroundColor(Color.TRANSPARENT);
     }
 
     /**
