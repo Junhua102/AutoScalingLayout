@@ -18,12 +18,16 @@ public class ScalingUtil {
      * @param view      根View
      * @param factor    缩放比例
      */
-    public static void scaleViewAndChildren(View view, float factor) {
+    public static void scaleViewAndChildren(View view, float factor, int level) {
         try{
             // 查看是否有 isAutoScaleEnable 方法
             Method method = view.getClass().getMethod("isAutoScaleEnable");
             // 如果isAutoScaleEnable关闭，则不缩放
             if(!(Boolean)method.invoke(view))
+                return;
+            // 存在isAutoScaleEnable 方法，说明View属于AutoScalingLayout
+            // AutoScalingLayout互相嵌套，子layout不在这里处理缩放
+            if (level > 0)
                 return;
         }catch (Exception e){
         }
@@ -68,7 +72,7 @@ public class ScalingUtil {
         if(view instanceof ViewGroup) {
             ViewGroup vg = (ViewGroup)view;
             for(int i = 0; i < vg.getChildCount(); i++) {
-                scaleViewAndChildren(vg.getChildAt(i), factor);
+                scaleViewAndChildren(vg.getChildAt(i), factor, level + 1);
             }
         }
     }

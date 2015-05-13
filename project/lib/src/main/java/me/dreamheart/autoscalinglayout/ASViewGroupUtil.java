@@ -158,7 +158,7 @@ public class ASViewGroupUtil {
 
             //Log.i("ASViewGroupUtil", "scaleSize " + scale);
             // 缩放ViewGroup
-            ScalingUtil.scaleViewAndChildren(vg, scale);
+            ScalingUtil.scaleViewAndChildren(vg, scale, 0);
 
             return true;
         }
