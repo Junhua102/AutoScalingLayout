@@ -21,7 +21,12 @@ For now the three layouts above are supported.
 
 Add the attribute:
 ============
+
 designWidth and designHeight are the screen sizes you are using when you are designing the GUI in the xml editor. For instance, I use Nexus 4 as my design device (I treat all the devices as Nexus 4), so the generic screen size converting to dp is 384dp and 575dp (exclude the statebar and the actionbar).
+
+autoScaleEnable use to enable/disable scaling.
+
+autoScaleType can be "fitInside", "fitWidth" and "fitHeight"
 
 ```
 <me.dreamheart.autoscalinglayout.ASRelativeLayout
@@ -30,6 +35,8 @@ designWidth and designHeight are the screen sizes you are using when you are des
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     custom:designWidth="384dp"
     custom:designHeight="575dp"
+    custom:autoScaleEnable="true"
+    custom:autoScaleType="fitInside"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -42,6 +49,8 @@ designWidth and designHeight are the screen sizes you are using when you are des
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     custom:designWidth="384dp"
     custom:designHeight="575dp"
+    custom:autoScaleEnable="true"
+    custom:autoScaleType="fitInside"
 ```
 
 1. designWidth and designHeight are very import. If you assign wrong values, you would not see the expected layouts. 
