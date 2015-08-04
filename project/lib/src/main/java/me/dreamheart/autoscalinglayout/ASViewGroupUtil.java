@@ -12,6 +12,10 @@ import android.view.ViewGroup;
  */
 public class ASViewGroupUtil {
 
+    private static final int TYPE_FIT_INSIDE = 0;
+    private static final int TYPE_FIT_WIDTH = 1;
+    private static final int TYPE_FIT_HEIGHT = 2;
+
     // 原设计宽高
     private int mDesignWidth;
     private int mDesignHeight;
@@ -20,6 +24,8 @@ public class ASViewGroupUtil {
     private float mCurrentHeight;
     // 是否开启自动缩放
     private boolean mAutoScaleEnable;
+    // 缩放模式
+    private int mScaleType;
 
     // 直接用宽高初始化
     public void init(int designWidth, int designHeight){
@@ -28,10 +34,13 @@ public class ASViewGroupUtil {
         mCurrentWidth = mDesignWidth;
         mCurrentHeight = mDesignHeight;
         mAutoScaleEnable = true;
+        mScaleType = TYPE_FIT_INSIDE;
     }
 
     // 用AttributeSet初始化
     public void init(ViewGroup vg, AttributeSet attrs){
+        mScaleType = TYPE_FIT_INSIDE;
+        String scaleTypeStr = null;
         TypedArray a = null;
         try{
             a = vg.getContext().obtainStyledAttributes(
@@ -42,6 +51,7 @@ public class ASViewGroupUtil {
             mDesignHeight = a.getDimensionPixelOffset(R.styleable.AutoScalingLayout_designHeight, 0);
             // 是否开启自动缩放
             mAutoScaleEnable = a.getBoolean(R.styleable.AutoScalingLayout_autoScaleEnable, true);
+            scaleTypeStr = a.getString(R.styleable.AutoScalingLayout_autoScaleType);
         }catch (Throwable e){
             // 用户使用jar时，没有R.styleable.AutoScalingLayout，需要根据字符串解析参数
             mAutoScaleEnable = true;
@@ -61,10 +71,20 @@ public class ASViewGroupUtil {
                     if (autoScaleEnableStr.equals("false"))
                         mAutoScaleEnable = false;
                 }
+                else if ("autoScaleType".equals(attrs.getAttributeName(i))) {
+                    scaleTypeStr = attrs.getAttributeValue(i);
+                }
             }
         }finally {
             if(null != a)
                 a.recycle();
+        }
+
+        if (null != scaleTypeStr){
+            if (scaleTypeStr.equals("fitWidth"))
+                mScaleType = TYPE_FIT_WIDTH;
+            else if (scaleTypeStr.equals("fitHeight"))
+                mScaleType = TYPE_FIT_HEIGHT;
         }
 
         mCurrentWidth = mDesignWidth;
@@ -99,6 +119,9 @@ public class ASViewGroupUtil {
             return measureSpecs;
 
         if (0 == mDesignWidth || 0 == mDesignHeight)
+            return measureSpecs;
+
+        if ( TYPE_FIT_INSIDE != mScaleType)
             return measureSpecs;
 
         int widthMode = View.MeasureSpec.getMode(widthMeasureSpec);
@@ -137,7 +160,10 @@ public class ASViewGroupUtil {
         if (!mAutoScaleEnable)
             return false;
 
-        if (0 == mDesignWidth || 0 == mDesignHeight)
+        if (0 == mDesignWidth && TYPE_FIT_HEIGHT != mScaleType)
+            return false;
+
+        if (0 == mDesignHeight && TYPE_FIT_WIDTH != mScaleType)
             return false;
 
         // 当前宽高
@@ -151,9 +177,18 @@ public class ASViewGroupUtil {
         // 如果大小改变则进行缩放
         if(width != this.mCurrentWidth || height != this.mCurrentHeight) {
             // 计算缩放比例
-            float wScale = (float)width / this.mCurrentWidth;
-            float hScale = (float)height / this.mCurrentHeight;
-            float scale = Math.min(wScale, hScale);
+            float scale;
+
+            if (TYPE_FIT_HEIGHT == mScaleType)
+                scale = (float)height / this.mCurrentHeight;
+            else if (TYPE_FIT_WIDTH == mScaleType)
+                scale = (float)width / this.mCurrentWidth;
+            else {
+                float wScale = (float)width / this.mCurrentWidth;
+                float hScale = (float)height / this.mCurrentHeight;
+                scale = Math.min(wScale, hScale);
+            }
+
             if (scale < 1.02 && scale > 0.98)
                 return false;
 
