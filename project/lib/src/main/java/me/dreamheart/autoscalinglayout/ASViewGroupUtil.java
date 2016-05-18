@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
  * ViewGroup自动缩放组件
  */
 public class ASViewGroupUtil {
+
+    public static boolean DEBUG = false;
 
     private static final int TYPE_FIT_INSIDE = 0;
     private static final int TYPE_FIT_WIDTH = 1;
@@ -93,6 +96,11 @@ public class ASViewGroupUtil {
         // 背景为空时，不进入draw函数，这里必须设置默认背景
         if (null == vg.getBackground())
             vg.setBackgroundColor(Color.TRANSPARENT);
+
+        if (DEBUG){
+            Log.v("AutoScalingLayout", "mDesignWidth=" + mDesignWidth + " mDesignHeight=" + mDesignHeight);
+            //Log.v("AutoScalingLayout", "1dp=" + getDimensionPixelOffset(vg.getContext(), "1dp") + "px");
+        }
     }
 
     /**
@@ -195,6 +203,10 @@ public class ASViewGroupUtil {
             // 保存当前宽高
             this.mCurrentWidth = width;
             this.mCurrentHeight = height;
+            if (DEBUG){
+                Log.v("AutoScalingLayout", "scale=" + scale);
+                Log.v("AutoScalingLayout", "width=" + width + " height=" + height);
+            }
 
             //Log.i("ASViewGroupUtil", "scaleSize " + scale);
             // 缩放ViewGroup

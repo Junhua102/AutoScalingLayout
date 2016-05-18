@@ -1,5 +1,6 @@
 package me.dreamheart.autoscalinglayout;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +38,13 @@ public class ScalingUtil {
         // 如果宽高是具体数值，则进行缩放。(MATCH_PARENT、WRAP_CONTENT 等都是负数)
         if(layoutParams.width > 0) {
             layoutParams.width *= factor;
+            if (ASViewGroupUtil.DEBUG)
+                Log.v("AutoScalingLayout", "new width=" + layoutParams.width);
         }
         if(layoutParams.height > 0) {
             layoutParams.height *= factor;
+            if (ASViewGroupUtil.DEBUG)
+                Log.v("AutoScalingLayout", "new height=" + layoutParams.height);
         }
 
         // 缩放margin
