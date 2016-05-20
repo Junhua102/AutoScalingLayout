@@ -1,8 +1,8 @@
 # AutoScalingLayout
 Auto-Scaling Layouts for Android.  
-
-        Android studio users import release/AutoScalingLayout.aar .
-
+``` 
+        compile 'me.dreamheart.autoscalinglayout:lib:1.3.0'
+```
         Eclipse users import release/AutoScalingLayout.jar, and copy attr.xml into value folder.
 
 ------------
@@ -45,13 +45,6 @@ autoScaleType can be "fitInside", "fitWidth" and "fitHeight"
     >
 ```
 
-```
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    custom:designWidth="384dp"
-    custom:designHeight="575dp"
-    custom:autoScaleEnable="true"
-    custom:autoScaleType="fitInside"
-```
 
 1. designWidth and designHeight are very import. If you assign wrong values, you would not see the expected layouts. 
 2. The unit used in the xml GUI editor should keep constant. For example, if you use dp for designWidth and designHeight, all the unit of the child views has to be dp, even the font size can not be sp, so as px, pt. If you just want to copy the pixel values given by GUI, just use px for all components.
