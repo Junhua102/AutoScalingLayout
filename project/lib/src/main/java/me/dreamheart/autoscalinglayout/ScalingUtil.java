@@ -18,6 +18,7 @@ public class ScalingUtil {
      * 缩放View和它的子View
      * @param view      根View
      * @param factor    缩放比例
+     * @param level     子layout层级
      */
     public static void scaleViewAndChildren(View view, float factor, int level) {
         try{
