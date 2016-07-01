@@ -4,10 +4,11 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     custom:designWidth="768px"
     custom:designHeight="1150px"
+    custom:preScaling="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoginActivity"
+    tools:context=".MainActivity"
     android:background="@drawable/login_bg"
     >
 

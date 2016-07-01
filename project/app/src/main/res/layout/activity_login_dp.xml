@@ -5,10 +5,11 @@
     custom:designWidth="384dp"
     custom:designHeight="575dp"
     custom:autoScaleEnable="true"
+    custom:preScaling="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoginActivity"
+    tools:context=".MainActivity"
     android:background="@drawable/login_bg"
     >
 

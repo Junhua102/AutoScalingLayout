@@ -49,7 +49,7 @@ public class ASLinearLayout extends LinearLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        mASViewGroupUtil.scaleSize(this);
+        mASViewGroupUtil.onLayout(this, changed, l, t, r, b);
     }
 
     @Override

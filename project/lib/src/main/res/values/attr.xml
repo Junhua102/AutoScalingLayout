@@ -4,6 +4,7 @@
         <attr name="designWidth" format="dimension" />
         <attr name="designHeight" format="dimension" />
         <attr name="autoScaleEnable" format="boolean" />
+        <attr name="preScaling" format="boolean" />
         <attr name="autoScaleType" format="string" />
     </declare-styleable>
 </resources>

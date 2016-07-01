@@ -29,6 +29,8 @@ public class ASViewGroupUtil {
     private boolean mAutoScaleEnable;
     // 缩放模式
     private int mScaleType;
+    // 在onLayout时预处理缩放，可能会引发问题，默认关闭
+    private boolean mPreScaling;
 
     // 直接用宽高初始化
     public void init(int designWidth, int designHeight){
@@ -38,6 +40,7 @@ public class ASViewGroupUtil {
         mCurrentHeight = mDesignHeight;
         mAutoScaleEnable = true;
         mScaleType = TYPE_FIT_INSIDE;
+        mPreScaling = false;
     }
 
     // 用AttributeSet初始化
@@ -54,6 +57,7 @@ public class ASViewGroupUtil {
             mDesignHeight = a.getDimensionPixelOffset(R.styleable.AutoScalingLayout_designHeight, 0);
             // 是否开启自动缩放
             mAutoScaleEnable = a.getBoolean(R.styleable.AutoScalingLayout_autoScaleEnable, true);
+            mPreScaling = a.getBoolean(R.styleable.AutoScalingLayout_preScaling, false);
             scaleTypeStr = a.getString(R.styleable.AutoScalingLayout_autoScaleType);
         }catch (Throwable e){
             // 用户使用jar时，没有R.styleable.AutoScalingLayout，需要根据字符串解析参数
@@ -73,6 +77,11 @@ public class ASViewGroupUtil {
                     String autoScaleEnableStr = attrs.getAttributeValue(i);
                     if (autoScaleEnableStr.equals("false"))
                         mAutoScaleEnable = false;
+                }
+                else if ("preScaling".equals(attrs.getAttributeName(i))) {
+                    String preScalingStr = attrs.getAttributeValue(i);
+                    if (preScalingStr.equals("true"))
+                        mPreScaling = true;
                 }
                 else if ("autoScaleType".equals(attrs.getAttributeName(i))) {
                     scaleTypeStr = attrs.getAttributeValue(i);
@@ -109,6 +118,19 @@ public class ASViewGroupUtil {
      */
     public boolean isAutoScaleEnable(){
         return mAutoScaleEnable;
+    }
+
+    /**
+     * 是否在onLayout时预处理缩放，可能会引发问题，默认关闭
+     * @return true or false
+     */
+    public boolean isPreScaling() {
+        return mPreScaling;
+    }
+
+    public void onLayout(ViewGroup vg, boolean changed, int l, int t, int r, int b) {
+        if (isPreScaling())
+            scaleSize(vg);
     }
 
     /**
