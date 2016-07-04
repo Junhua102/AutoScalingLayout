@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.5.0"
+version = "1.6.1"
 def siteUrl = 'https://github.com/Junhua102/AutoScalingLayout'
 def gitUrl = 'https://github.com/Junhua102/AutoScalingLayout.git'
 
@@ -47,8 +47,8 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 21
-        versionCode 10500
-        versionName "1.5.0"
+        versionCode 10601
+        versionName "1.6.1"
     }
     buildTypes {
         release {

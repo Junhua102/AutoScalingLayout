@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 public class ASViewGroupUtil {
 
     public static boolean DEBUG = false;
+    private static boolean ScalingToolbar = false;
 
     private static final int TYPE_FIT_INSIDE = 0;
     private static final int TYPE_FIT_WIDTH = 1;
@@ -113,6 +114,22 @@ public class ASViewGroupUtil {
     }
 
     /**
+     * 是否对Toolbar进行缩放
+     * @return true or false
+     */
+    public static boolean isScalingToolbar() {
+        return ScalingToolbar;
+    }
+
+    /**
+     * 设置是否对Toolbar进行缩放
+     * @param scalingToolbar true or false
+     */
+    public static void setScalingToolbar(boolean scalingToolbar) {
+        ScalingToolbar = scalingToolbar;
+    }
+
+    /**
      * 是否开启自动缩放
      * @return true or false
      */
@@ -148,12 +165,6 @@ public class ASViewGroupUtil {
         if (!mAutoScaleEnable)
             return measureSpecs;
 
-        if (0 == mDesignWidth || 0 == mDesignHeight)
-            return measureSpecs;
-
-        if ( TYPE_FIT_INSIDE != mScaleType)
-            return measureSpecs;
-
         int widthMode = View.MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = View.MeasureSpec.getMode(heightMeasureSpec);
 
@@ -161,6 +172,27 @@ public class ASViewGroupUtil {
         int height = View.MeasureSpec.getSize(heightMeasureSpec);
 
         ViewGroup.LayoutParams params = vg.getLayoutParams();
+
+        // 已知宽度
+        boolean bScalingWidth = widthMode == View.MeasureSpec.EXACTLY && ViewGroup.LayoutParams.MATCH_PARENT == params.width;
+        // 已知高度
+        boolean bScalingHeight = heightMode == View.MeasureSpec.EXACTLY && ViewGroup.LayoutParams.MATCH_PARENT == params.height;
+
+        if (bScalingHeight && bScalingWidth && TYPE_FIT_INSIDE == mScaleType){
+            scaleSize(vg, width, height, TYPE_FIT_INSIDE);
+        }
+        else if (bScalingHeight && TYPE_FIT_HEIGHT == mScaleType){
+            scaleSize(vg, width, height, TYPE_FIT_HEIGHT);
+        }
+        else if (bScalingWidth && TYPE_FIT_WIDTH == mScaleType){
+            scaleSize(vg, width, height, TYPE_FIT_WIDTH);
+        }
+
+        if (0 == mDesignWidth || 0 == mDesignHeight)
+            return measureSpecs;
+
+        if ( TYPE_FIT_INSIDE != mScaleType)
+            return measureSpecs;
 
         if (widthMode != View.MeasureSpec.EXACTLY
                 && heightMode == View.MeasureSpec.EXACTLY
@@ -203,15 +235,27 @@ public class ASViewGroupUtil {
         if (0 == width || 0 == height)
             return false;
 
+        return scaleSize(vg, width, height, mScaleType);
+    }
+
+    /**
+     * 缩放ViewGroup
+     * @param vg    ViewGroup
+     * @param width     当前宽度
+     * @param height    当前高度
+     * @param type      缩放类型
+     * @return true表示进行了缩放 false表示不需要缩放
+     */
+    public boolean scaleSize(ViewGroup vg, int width, int height, int type) {
         //Log.i("ASViewGroupUtil", "scaleSize");
         // 如果大小改变则进行缩放
         if(width != this.mCurrentWidth || height != this.mCurrentHeight) {
             // 计算缩放比例
             float scale;
 
-            if (TYPE_FIT_HEIGHT == mScaleType)
+            if (TYPE_FIT_HEIGHT == type)
                 scale = (float)height / this.mCurrentHeight;
-            else if (TYPE_FIT_WIDTH == mScaleType)
+            else if (TYPE_FIT_WIDTH == type)
                 scale = (float)width / this.mCurrentWidth;
             else {
                 float wScale = (float)width / this.mCurrentWidth;
