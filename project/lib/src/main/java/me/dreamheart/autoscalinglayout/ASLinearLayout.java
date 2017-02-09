@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-public class ASLinearLayout extends LinearLayout {
+public class ASLinearLayout extends LinearLayout implements AutoScaleLayout{
 
     private ASViewGroupUtil mASViewGroupUtil;
 
@@ -38,6 +38,11 @@ public class ASLinearLayout extends LinearLayout {
             mASViewGroupUtil = new ASViewGroupUtil();
             mASViewGroupUtil.init(this, attrs);
         }
+    }
+
+    @Override
+    public boolean isAutoScaleEnable(){
+        return mASViewGroupUtil.isAutoScaleEnable();
     }
 
     @Override

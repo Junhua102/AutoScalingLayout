@@ -25,18 +25,18 @@ public class ScalingUtil {
 //            if (ASViewGroupUtil.DEBUG)
 //                Log.v("AutoScalingLayout", "scaling view " + view.getClass().getName());
 
-            // 查看是否有 isAutoScaleEnable 方法
-            Method method = view.getClass().getMethod("isAutoScaleEnable");
-            // 如果isAutoScaleEnable关闭，则不缩放
-            if(!(Boolean)method.invoke(view))
-                return;
-            // 存在isAutoScaleEnable 方法，说明View属于AutoScalingLayout
-            // AutoScalingLayout互相嵌套，子layout不在这里处理缩放
-            if (level > 0)
-                return;
+            // 查看是否是AutoScaleLayout
+            if (view instanceof AutoScaleLayout) {
+                // isAutoScaleEnable为false，不缩放
+                if (!((AutoScaleLayout) view).isAutoScaleEnable())
+                    return;
 
+                // AutoScalingLayout互相嵌套，子layout不在这里处理缩放
+                if (level > 0)
+                    return;
+            }
             // Toolbar不进行缩放
-            if (!ASViewGroupUtil.isScalingToolbar()){
+            else if (!ASViewGroupUtil.isScalingToolbar()){
                 if (view.getClass().getName().equals("android.widget.Toolbar"))
                     return;
                 if (view.getClass().getName().equals("android.support.v7.widget.Toolbar"))

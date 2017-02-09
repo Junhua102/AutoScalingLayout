@@ -9,7 +9,7 @@ import android.widget.FrameLayout;
 /**
  *
  */
-public class ASFrameLayout extends FrameLayout {
+public class ASFrameLayout extends FrameLayout implements AutoScaleLayout{
     private ASViewGroupUtil mASViewGroupUtil;
 
     public ASFrameLayout(Context context, int designWidth, int designHeight) {
@@ -41,6 +41,7 @@ public class ASFrameLayout extends FrameLayout {
         }
     }
 
+    @Override
     public boolean isAutoScaleEnable(){
         return mASViewGroupUtil.isAutoScaleEnable();
     }

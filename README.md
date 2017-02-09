@@ -1,7 +1,7 @@
 # AutoScalingLayout
 Auto-Scaling Layouts for Android.  
 ``` 
-        compile 'me.dreamheart.autoscalinglayout:lib:1.6.1'
+        compile 'me.dreamheart.autoscalinglayout:lib:1.6.2'
 ```
         Eclipse users import release/AutoScalingLayout.jar, and copy attr.xml into value folder.
 

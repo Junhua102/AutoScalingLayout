@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-public class ASRelativeLayout extends RelativeLayout {
+public class ASRelativeLayout extends RelativeLayout implements AutoScaleLayout{
 
     private ASViewGroupUtil mASViewGroupUtil;
 
@@ -39,6 +39,7 @@ public class ASRelativeLayout extends RelativeLayout {
         }
     }
 
+    @Override
     public boolean isAutoScaleEnable(){
         return mASViewGroupUtil.isAutoScaleEnable();
     }
